@@ -1,0 +1,22 @@
+﻿<Window x:Class="swp_u2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="600" Width="800" ResizeMode="NoResize">
+    <Grid Background="LightGray">
+        <Canvas x:Name="Scene" HorizontalAlignment="Left" Height="560" Margin="115,0,0,0" VerticalAlignment="Top" Width="667" Background="White"/>
+
+        <Button Content="Rectangle" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="90" Click="Rectangle_Click" />
+        <Button Content="Square" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="90" Click="Square_Click" />
+        <Button Content="Ellipse" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top" Width="90" Click="Ellipse_Click" />
+        <Button Content="Circle" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="90" Click="Circle_Click" />
+        <Button Content="Triangle" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" Width="90"  Click="Triangle_Click"/>
+
+        <Button Content="Pen 1" HorizontalAlignment="Left" Margin="10,200,0,0" VerticalAlignment="Top" Width="90" />
+        <Button Content="Pen 2" HorizontalAlignment="Left" Margin="10,230,0,0" VerticalAlignment="Top" Width="90" />
+
+        <Button Content="Group" HorizontalAlignment="Left" Margin="10,300,0,0" VerticalAlignment="Top" Width="90" />
+        <Button Content="Move" HorizontalAlignment="Left" Margin="10,330,0,0" VerticalAlignment="Top" Width="90" />
+
+        <Button Content="Quit" HorizontalAlignment="Left" Margin="10,530,0,0" VerticalAlignment="Top" Width="90" Click="Quit_Click" />
+    </Grid>
+</Window>

@@ -1,0 +1,13 @@
+S:\Technikum Wien\4 Semester\SWP\swp_u2\swp_u2\bin\Debug\swp_u2.exe.config
+S:\Technikum Wien\4 Semester\SWP\swp_u2\swp_u2\bin\Debug\swp_u2.exe
+S:\Technikum Wien\4 Semester\SWP\swp_u2\swp_u2\bin\Debug\swp_u2.pdb
+S:\Technikum Wien\4 Semester\SWP\swp_u2\swp_u2\obj\Debug\swp_u2.csprojResolveAssemblyReference.cache
+S:\Technikum Wien\4 Semester\SWP\swp_u2\swp_u2\obj\Debug\MainWindow.baml
+S:\Technikum Wien\4 Semester\SWP\swp_u2\swp_u2\obj\Debug\MainWindow.g.cs
+S:\Technikum Wien\4 Semester\SWP\swp_u2\swp_u2\obj\Debug\App.g.cs
+S:\Technikum Wien\4 Semester\SWP\swp_u2\swp_u2\obj\Debug\swp_u2_MarkupCompile.cache
+S:\Technikum Wien\4 Semester\SWP\swp_u2\swp_u2\obj\Debug\swp_u2.g.resources
+S:\Technikum Wien\4 Semester\SWP\swp_u2\swp_u2\obj\Debug\swp_u2.Properties.Resources.resources
+S:\Technikum Wien\4 Semester\SWP\swp_u2\swp_u2\obj\Debug\swp_u2.csproj.GenerateResource.Cache
+S:\Technikum Wien\4 Semester\SWP\swp_u2\swp_u2\obj\Debug\swp_u2.exe
+S:\Technikum Wien\4 Semester\SWP\swp_u2\swp_u2\obj\Debug\swp_u2.pdb
