@@ -22,23 +22,29 @@ namespace swp_u2.Command
     {
         double posX;
         double posY;
+        double h;
+        double w;
+        Canvas scene;
 
         ModelEllipseShape ellipse;
 
-        public AddEllipse(double posX, double posY)
+        public AddEllipse(double posX, double posY, double h, double w, Canvas scene)
         {
             this.posX = posX;
             this.posY = posY;
+            this.h = h;
+            this.w = w;
+            this.scene = scene;
         }
 
         public void Execute()
         {
             ModelShape shape = new ModelShape();
-            ellipse = new ModelEllipseShape(posX, posY, 0, 0);
+            ellipse = new ModelEllipseShape(posX, posY, h, w);
             shape.myPath = ellipse.myPath;
             shape.pos = new Point(posX, posY);
             shape.Typ = ModelShape.type.Ellipse;
-
+            scene.Children.Add(shape.myPath);
         }
     }
 }

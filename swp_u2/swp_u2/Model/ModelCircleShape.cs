@@ -25,7 +25,7 @@ namespace swp_u2.Model
             {
                 Fill = Brushes.Green,
                 Stroke = Brushes.Black,
-                Data = new EllipseGeometry(new Rect(posX, posY, radR, radR)),
+                Data = new EllipseGeometry(new Rect(posX, posY, radR, radR)),                
             };
         }
     }

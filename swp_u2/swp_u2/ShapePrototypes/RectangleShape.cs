@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace swp_u2.ShapePrototypes
 {
-    class RectangleShape
+    class RectangleShape : ICloneable
     {
         double h;
         double w;

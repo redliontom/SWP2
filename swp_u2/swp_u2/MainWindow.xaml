@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="600" Width="800" ResizeMode="NoResize">
     <Grid Background="LightGray">
-        <Canvas x:Name="Scene" HorizontalAlignment="Left" Height="560" Margin="115,0,0,0" VerticalAlignment="Top" Width="667" Background="White"/>
+        <Canvas x:Name="Scene" HorizontalAlignment="Left" Height="560" Margin="115,0,0,0" VerticalAlignment="Top" Width="667" Background="White" MouseDown="Scene_MouseDown"/>
 
         <Button Content="Rectangle" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="90" Click="Rectangle_Click" />
         <Button Content="Square" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="90" Click="Square_Click" />
@@ -16,6 +16,11 @@
 
         <Button Content="Group" HorizontalAlignment="Left" Margin="10,300,0,0" VerticalAlignment="Top" Width="90" />
         <Button Content="Move" HorizontalAlignment="Left" Margin="10,330,0,0" VerticalAlignment="Top" Width="90" />
+
+        <Label Content="Width" HorizontalAlignment="Left"  Margin="10,370,0,0" VerticalAlignment="Top" Width="90"></Label>
+        <Slider x:Name="slider_w" HorizontalAlignment="Left"  Margin="10,390,0,0" VerticalAlignment="Top" Width="90" Maximum="500" LargeChange="10" SmallChange="1" TickFrequency="10" Value="150"></Slider>
+        <Label Content="Height" HorizontalAlignment="Left"  Margin="10,410,0,0" VerticalAlignment="Top" Width="90"></Label>
+        <Slider x:Name="slider_h" HorizontalAlignment="Left"  Margin="10,430,0,0" VerticalAlignment="Top" Width="90" Value="150" SmallChange="1" TickFrequency="10" LargeChange="10" Maximum="500"></Slider>
 
         <Button Content="Quit" HorizontalAlignment="Left" Margin="10,530,0,0" VerticalAlignment="Top" Width="90" Click="Quit_Click" />
     </Grid>

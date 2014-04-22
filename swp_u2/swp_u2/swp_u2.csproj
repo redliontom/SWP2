@@ -56,6 +56,7 @@
     <Compile Include="Command\AddCircle.cs" />
     <Compile Include="Command\AddSquare.cs" />
     <Compile Include="Model\ModelCircleShape.cs" />
+    <Compile Include="Model\ModelThumb.cs" />
     <Compile Include="Model\ModelSquareShape.cs" />
     <Compile Include="ShapePrototypes\CircleShape.cs" />
     <Compile Include="ShapePrototypes\EllipseShape.cs" />

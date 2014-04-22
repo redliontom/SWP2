@@ -15,27 +15,34 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using swp_u2.Command;
 using swp_u2.Model;
+using swp_u2;
 
 namespace swp_u2.Command
 {
     class AddCircle : Interface
     {
+        double posX;
+        double posY;
         double posR;
+        Canvas scene;
 
-        ModelEllipseShape ellipse;
+        ModelCircleShape circle;
 
-        public AddCircle(double posR)
+        public AddCircle(double posX, double posY, double posR, Canvas scene)
         {
+            this.posX = posX;
+            this.posY = posY;
             this.posR = posR;
+            this.scene = scene;
         }
 
         public void Execute()
         {
             ModelShape shape = new ModelShape();
-            ellipse = new ModelEllipseShape(posR, posR, 0, 0);
-            shape.myPath = ellipse.myPath;
-            shape.pos = new Point(posR, posR);
-            shape.Typ = ModelShape.type.Circle;
+            circle = new ModelCircleShape(posX, posY, posR);
+            shape.myPath = circle.myPath;
+            shape.pos = new Point(posX, posY);
+            shape.Typ = ModelShape.type.Circle;            
         }
     }
 }

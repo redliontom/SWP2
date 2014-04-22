@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace swp_u2.ShapePrototypes
 {
-    class CircleShape
+    class CircleShape : ICloneable
     {
         double r;
 
