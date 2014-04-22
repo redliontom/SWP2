@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="600" Width="800" ResizeMode="NoResize">
     <Grid Background="LightGray">
-        <Canvas x:Name="Scene" HorizontalAlignment="Left" Height="560" Margin="115,0,0,0" VerticalAlignment="Top" Width="667" Background="White" MouseDown="Scene_MouseDown"/>
+        <Canvas x:Name="Scene" HorizontalAlignment="Left" Height="560" Margin="115,0,0,0" VerticalAlignment="Top" Width="667" Background="White" MouseDown="Scene_MouseDown" />
 
         <Button Content="Rectangle" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="90" Click="Rectangle_Click" />
         <Button Content="Square" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="90" Click="Square_Click" />

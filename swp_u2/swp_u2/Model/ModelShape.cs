@@ -19,7 +19,7 @@ namespace swp_u2.Model
     {
         public enum type
         {
-            Rectangle, Square, Ellipse, Circle
+            Rectangle, Square, Ellipse, Circle, Triangle
         };
 
         public type Typ { get; set; }

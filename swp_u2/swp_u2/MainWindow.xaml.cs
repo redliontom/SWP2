@@ -57,7 +57,7 @@ namespace swp_u2
 
         private void Triangle_Click(object sender, RoutedEventArgs e)
         {
-            //type = ModelShape.type.Triangle;
+            type = ModelShape.type.Triangle;
         }
 
         private void Scene_MouseDown(object sender, MouseButtonEventArgs e)
@@ -84,6 +84,10 @@ namespace swp_u2
                 case ModelShape.type.Circle:
                     AddCircle addCircle = new AddCircle(posX, PosY, w, Scene);
                     addCircle.Execute();
+                    break;
+                case ModelShape.type.Triangle:
+                    AddTriangle addTriangle = new AddTriangle(posX, PosY, w, Scene);
+                    addTriangle.Execute();
                     break;
             }
         }

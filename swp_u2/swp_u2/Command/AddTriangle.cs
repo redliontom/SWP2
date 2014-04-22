@@ -13,35 +13,36 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Controls.Primitives;
 using swp_u2.Command;
 using swp_u2.Model;
 
 namespace swp_u2.Command
 {
-    class AddCircle : Interface
+    class AddTriangle : Interface
     {
         double posX;
         double posY;
-        double posR;
+        double posW;
         Canvas scene;
 
-        ModelCircleShape circle;
+        ModelTriangleShape triangle;
 
-        public AddCircle(double posX, double posY, double posR, Canvas scene)
+        public AddTriangle(double posX, double posY, double posW, Canvas scene)
         {
             this.posX = posX;
             this.posY = posY;
-            this.posR = posR;
+            this.posW = posW;
             this.scene = scene;
         }
 
         public void Execute()
         {
             ModelShape shape = new ModelShape();
-            circle = new ModelCircleShape(posX, posY, posR);
-            shape.myPath = circle.myPath;
+            triangle = new ModelTriangleShape(posX, posY, posW);
+            shape.myPath = triangle.myPath;
             shape.pos = new Point(posX, posY);
-            shape.Typ = ModelShape.type.Circle;
+            shape.Typ = ModelShape.type.Triangle;
             scene.Children.Add(shape.myPath);
         }
     }
