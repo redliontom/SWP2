@@ -12,20 +12,18 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 
 namespace swp_u2.Model
 {
-    class ModelThumb
+    class ModelLine
     {
         public enum type
         {
-            Thumb
+            Thin, Bold
         };
 
         public type Typ { get; set; }
-        public Thumb myPath { get; set; }
+        public Line myLine { get; set; }
         public Point pos { get; set; }
     }
 }

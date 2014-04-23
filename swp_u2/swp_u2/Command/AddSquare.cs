@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
+using System.Windows.Resources;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -14,6 +14,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media.Composition;
+using System.Windows;
+using System.Windows.Controls;
+using System.Reflection;
+using System.Data;
 using swp_u2.Command;
 using swp_u2.Model;
 
@@ -26,6 +31,8 @@ namespace swp_u2.Command
         double w;
         Canvas scene;
         bool isDragging = false;
+        double mouseVerticalPosition;
+        double mouseHorizontalPosition;
 
         ModelShape shape;
         ModelSquareShape square;
@@ -40,10 +47,13 @@ namespace swp_u2.Command
         }
 
         public void Execute()
-        {
-            thumb = new ModelThumb(w, w);            
-            thumb.cornerThumb.DragDelta += cornerThumb_DragDelta;
-            scene.Children.Add(thumb.cornerThumb);
+        {            
+            /*ModelThumbRect thumbrect = new ModelThumbRect(posX, posY, w, w);
+            thumb = new ModelThumb();
+            thumbrect.myPath.DragDelta += cornerThumb_DragDelta;
+            scene.Children.Add(thumbrect.myPath);
+            thumb.myPath = thumbrect.myPath;*/
+
 
             shape = new ModelShape();
             square = new ModelSquareShape(posX, posY, w);
@@ -58,37 +68,97 @@ namespace swp_u2.Command
             scene.Children.Add(shape.myPath);
         }
 
-        void cornerThumb_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+        void tmb_DragDelta(object sender, DragDeltaEventArgs e)
         {
-            //Move the Thumb to the mouse position during the drag operation 
-            double yadjust = shape.myPath.Data.Bounds.Height + e.VerticalChange;
-            double xadjust = shape.myPath.Data.Bounds.Width + e.HorizontalChange;
+            //Thumb anhand des sender-Parameters bestimmen
+            Canvas.SetLeft(shape.myPath, Canvas.GetLeft(shape.myPath) + e.HorizontalChange);
+            Canvas.SetTop(shape.myPath, Canvas.GetTop(shape.myPath) + e.VerticalChange);
+            Canvas.SetLeft(sender as Thumb, Canvas.GetLeft(sender as Thumb) + e.HorizontalChange);
+            Canvas.SetTop(sender as Thumb, Canvas.GetTop(sender as Thumb) + e.VerticalChange);
+        }
 
-            if ((xadjust >= 0) && (yadjust >= 0))
+        void tmb_DragCompleted(object sender, DragCompletedEventArgs e)
+        {
+            if ((sender as Thumb).Tag == null)
             {
-                square.myPath.Width = thumb.cornerThumb.Width = xadjust;
-                square.myPath.Height = thumb.cornerThumb.Height = yadjust;
+                (sender as Thumb).Tag = "Completed";//Wert zuweisen, damit wir erkennen können, ob der Thumb schonmal gezigen wurde
+                //CreateThumb();//neuen Thumb erzeugen
             }
         }
 
-        void myPath_MouseUp(object sender, MouseButtonEventArgs e)
+        void cornerThumb_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
-           ((Path)sender).ReleaseMouseCapture();
-            isDragging = false;
+            double yadjust = w + e.VerticalChange;
+            double xadjust = w + e.HorizontalChange;
+            if ((xadjust >= 0) && (yadjust >= 0))
+            {
+                square.myPath.Width = w = yadjust;
+                square.myPath.Height = w = xadjust;
+            }
+            //Move the Thumb to the mouse position during the drag operation 
+            /*double yadjust = w + e.VerticalChange;
+            double xadjust = w + e.HorizontalChange;
+
+            if ((xadjust >= 0) && (yadjust >= 0))
+            {
+                square.myPath.Width = thumb.myPath.Width = xadjust;
+                square.myPath.Height = thumb.myPath.Height = yadjust;
+            }*/
         }
 
-        private void myPath_MouseDown(object sender, MouseButtonEventArgs e)
+        void myPath_MouseUp(object sender, MouseEventArgs e)
         {
-            ((Path)sender).CaptureMouse();
+            isDragging = false;
+           ((Path)sender).ReleaseMouseCapture(); 
+            mouseVerticalPosition = -1;
+            mouseHorizontalPosition = -1;
+        }
+
+        private void myPath_MouseDown(object sender, MouseEventArgs e)
+        {
+            var test = shape.myPath.Data.Bounds;
+            mouseVerticalPosition = e.GetPosition(scene).Y;
+            mouseHorizontalPosition = e.GetPosition(scene).X;
             isDragging = true;
+            ((Path)sender).CaptureMouse();
+
         }
 
         private void myPath_MouseMove(object sender, MouseEventArgs e)
         {
             if (isDragging)
             {
-                Canvas.SetLeft(((Path)sender), (e.GetPosition(scene).X - (((Path)sender).Data.Bounds.Width / 2)));
-                Canvas.SetTop(((Path)sender), (e.GetPosition(scene).Y - (((Path)sender).Data.Bounds.Height / 2)));
+                if (Math.Abs(posX + w - e.GetPosition(scene).X) < 25 &&
+                    Math.Abs(posY + w - e.GetPosition(scene).Y) < 25)
+                {
+                    var x = Math.Abs(e.GetPosition(scene).X - mouseHorizontalPosition);
+                    var y = Math.Abs(e.GetPosition(scene).Y - mouseVerticalPosition);
+
+                    var width = Math.Abs(w - x);
+                    var height = Math.Abs(w - y);
+
+                    shape.myPath.Width = w += width;
+                    shape.myPath.Height = w += height;
+                }
+                else
+                {
+                    // Calculate the current position of the object.
+                    double deltaV = e.GetPosition(scene).Y - mouseVerticalPosition;
+                    double deltaH = e.GetPosition(scene).X - mouseHorizontalPosition;
+                    double newTop = deltaV + posX;
+                    double newLeft = deltaH + posY;
+
+                    // Set new position of object.
+                    ((Path)sender).SetValue(Canvas.TopProperty, newTop);
+                    ((Path)sender).SetValue(Canvas.LeftProperty, newLeft);
+
+                    // Update position global variables.
+                    mouseVerticalPosition = e.GetPosition(scene).Y;
+                    mouseHorizontalPosition = e.GetPosition(scene).X;
+
+                    posX = newTop;
+                    posY = newLeft;
+                }
             }
         }
     }
