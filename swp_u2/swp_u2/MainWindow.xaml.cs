@@ -12,25 +12,25 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using swp_u2.Command;
-using swp_u2.Model;
+using SWP2.Prototypes;
+using SWP2.Command;
+using SWP2.Composite;
 
-namespace swp_u2
+namespace SWP2
 {
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        ModelShape.type? type = null;
-        ModelLine.type? lineType = null;
-        swp_u2.Composite.Composite root = new swp_u2.Composite.Composite();
-
-        Point currentPoint = new Point();
+        ModelShape.type? type = ModelShape.type.Square;
+        Composite.Composite root = new Composite.Composite();
+        ModelShape rectShape = new ModelShape();        
 
         public MainWindow()
         {
             InitializeComponent();
+            this.DataContext = this;
         }
 
         private void Quit_Click(object sender, RoutedEventArgs e)
@@ -41,35 +41,30 @@ namespace swp_u2
         private void Rectangle_Click(object sender, RoutedEventArgs e)
         {
             type = ModelShape.type.Rectangle;
-            lineType = null;
         }
 
         private void Square_Click(object sender, RoutedEventArgs e)
         {
             type = ModelShape.type.Square;
-            lineType = null;
         }
 
         private void Ellipse_Click(object sender, RoutedEventArgs e)
         {
             type = ModelShape.type.Ellipse;
-            lineType = null;
         }
 
         private void Circle_Click(object sender, RoutedEventArgs e)
         {
             type = ModelShape.type.Circle;
-            lineType = null;
         }
 
         private void Triangle_Click(object sender, RoutedEventArgs e)
         {
             type = ModelShape.type.Triangle;
-            lineType = null;
         }
 
         private void Scene_MouseDown(object sender, MouseButtonEventArgs e)
-        {      
+        {  
             double posX = e.GetPosition(Scene).X;
             double PosY = e.GetPosition(Scene).Y;
             double h = slider_h.Value;
@@ -78,70 +73,48 @@ namespace swp_u2
             switch (type)
             {
                 case ModelShape.type.Rectangle:
-                    AddRectangle addRect = new AddRectangle(posX, PosY, w, h, Scene);
-                    addRect.Execute();
+                    AddRectangle addRect = new AddRectangle(posX, PosY, w, h, Scene, root);
+                    addRect.Execute(rectShape);
                     break;
                 case ModelShape.type.Square:
-                    AddSquare addSquare = new AddSquare(posX, PosY, w, Scene);
-                    addSquare.Execute();
+                    AddSquare addSquare = new AddSquare(posX, PosY, w, Scene, root);
+                    addSquare.Execute(rectShape);
                     break;
                 case ModelShape.type.Ellipse:
-                    AddEllipse addEllipse = new AddEllipse(posX, PosY, w, h, Scene);
-                    addEllipse.Execute();
+                    AddEllipse addEllipse = new AddEllipse(posX, PosY, w, h, Scene, root);
+                    addEllipse.Execute(rectShape);
                     break;
                 case ModelShape.type.Circle:
-                    AddCircle addCircle = new AddCircle(posX, PosY, w, Scene);
-                    addCircle.Execute();
+                    AddCircle addCircle = new AddCircle(posX, PosY, w, Scene, root);
+                    addCircle.Execute(rectShape);
                     break;
                 case ModelShape.type.Triangle:
-                    AddTriangle addTriangle = new AddTriangle(posX, PosY, w, Scene);
-                    addTriangle.Execute();
+                    AddTriangle addTriangle = new AddTriangle(posX, PosY, w, Scene, root);
+                    addTriangle.Execute(rectShape);
                     break;
-                default:
-                    if (e.ButtonState == MouseButtonState.Pressed)
-                        currentPoint = e.GetPosition(Scene);
-                    break;
-            }
-
-            
-        }
-
-        private void Scene_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                switch (lineType)
-                {
-                    case ModelLine.type.Thin:
-                        AddLineThin addThin = new AddLineThin(currentPoint.X, currentPoint.Y, e.GetPosition(Scene).X, e.GetPosition(Scene).Y, Scene);
-                        currentPoint = e.GetPosition(Scene);
-                        addThin.Execute();
-                        break;
-                    case ModelLine.type.Bold:
-                        AddLineBold addBold = new AddLineBold(currentPoint.X, currentPoint.Y, e.GetPosition(Scene).X, e.GetPosition(Scene).Y, Scene);
-                        currentPoint = e.GetPosition(Scene);
-                        addBold.Execute();
-                        break;
-                }
-            }
-        }
-
-        private void Pen1_Click(object sender, RoutedEventArgs e)
-        {
-            lineType = ModelLine.type.Thin;
-            type = null;
-        }
-
-        private void Pen2_Click(object sender, RoutedEventArgs e)
-        {
-            lineType = ModelLine.type.Bold;
-            type = null;
+            }            
         }
 
         private void Move_Click(object sender, RoutedEventArgs e)
         {
-            lineType = null;
             type = null;
         }
+
+        private void Resize_Click(object sender, RoutedEventArgs e)
+        {
+            Resize resize = new Resize(root);
+            resize.Execute(rectShape);
+        }
+
+        /*public bool HasHeight
+        {
+            get
+            {
+                if (type == ModelShape.type.Ellipse || type == ModelShape.type.Rectangle || type == ModelShape.type.Triangle)
+                    return true;
+                else
+                    return false;
+            }
+        }*/
     }
 }

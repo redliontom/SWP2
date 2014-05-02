@@ -54,24 +54,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Command\AddCircle.cs" />
-    <Compile Include="Command\AddLineBold.cs" />
-    <Compile Include="Command\AddLineThin.cs" />
-    <Compile Include="Command\AddThumb.cs" />
+    <Compile Include="Command\AddEllipse.cs" />
+    <Compile Include="Command\AddRectangle.cs" />
     <Compile Include="Command\AddSquare.cs" />
     <Compile Include="Command\AddTriangle.cs" />
-    <Compile Include="Model\ModelCircleShape.cs" />
-    <Compile Include="Model\ModelLine.cs" />
-    <Compile Include="Model\ModelLineBold.cs" />
-    <Compile Include="Model\ModelLineThin.cs" />
-    <Compile Include="Model\ModelThumbRect.cs" />
-    <Compile Include="Model\ModelThumb.cs" />
-    <Compile Include="Model\ModelThumbTemp.cs" />
-    <Compile Include="Model\ModelSquareShape.cs" />
-    <Compile Include="Model\ModelTriangleShape.cs" />
-    <Compile Include="ShapePrototypes\CircleShape.cs" />
-    <Compile Include="ShapePrototypes\EllipseShape.cs" />
-    <Compile Include="ShapePrototypes\RectangleShape.cs" />
-    <Compile Include="ShapePrototypes\SquareShape.cs" />
+    <Compile Include="Command\ICommand.cs" />
+    <Compile Include="Command\Resize.cs" />
+    <Compile Include="Composite\IComposite.cs" />
+    <Compile Include="Prototypes\ModelShape.cs" />
+    <Compile Include="Prototypes\RectangleShape.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -80,9 +71,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Command\AddEllipse.cs" />
-    <Compile Include="Command\AddRectangle.cs" />
-    <Compile Include="Command\Interface.cs" />
     <Compile Include="Composite\Composite.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -90,9 +78,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\ModelEllipseShape.cs" />
-    <Compile Include="Model\ModelShape.cs" />
-    <Compile Include="Model\ModelRectangleShape.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

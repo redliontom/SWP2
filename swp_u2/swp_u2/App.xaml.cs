@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace swp_u2
+namespace SWP2
 {
     /// <summary>
     /// Interaktionslogik für "App.xaml"

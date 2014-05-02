@@ -2,38 +2,42 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Shapes;
-using System.Windows.Media;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using swp_u2.Model;
+using SWP2.Prototypes;
 
-namespace swp_u2.Composite
+namespace SWP2.Composite
 {
-    class Composite : ModelShape
+    class Composite : IComposite
     {
-        public List<ModelShape> child {get; set;}
-       
+        private List<ModelShape> childs { get; set; }
+
         public Composite()
         {
-            child = new List<ModelShape>();
-        }
-        
-        public void add(ModelShape component)
-        {
-            child.Add(component);
-        }
-        
-        public void remove(ModelShape component)
-        {
-            child.Remove(component);
+            childs = new List<ModelShape>();
         }
 
+        public void Add(ModelShape component)
+        {
+            childs.Add(component);
+        }
+
+        public void Remove(ModelShape component)
+        {
+            childs.Remove(component);
+        }
+
+        public override void Draw(ModelShape shape, Canvas scene, double posX, double posY, double w, double h)
+        {
+
+        }
+
+        public override void Resize(double factor)
+        {
+            foreach (ModelShape child in childs){
+               if (child.isSelected)
+                child.Resize(factor);
+            }
+        }
     }
 }
