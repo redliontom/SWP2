@@ -1,24 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Shapes;
+
 using SWP2.Prototypes;
 
 namespace SWP2.Command
 {
     class Resize : ICommand
     {
-        Composite.Composite comp;
+        GraphicsEditor ge = GraphicsEditor.GetInstance;
+        double _factor;
 
-        public Resize(Composite.Composite comp)
+        public Resize(double factor)
         {
-            this.comp = comp;
+            _factor = factor;
         }
 
         public void Execute(ModelShape shape)
         {
-            comp.Resize(0.5);
+            foreach (AbstractShape element in ge.Root.childs)
+            {
+                if (element.isSelected)
+                {
+                    if (element.GetType().FullName == "SWP2.Composite.Composite")
+                    {
+                        Composite.Composite tempElement = element as Composite.Composite;
+                        tempElement.Resize(_factor);
+                    }
+                    else
+                    {
+                        ModelShape tempElement = element as ModelShape;
+                        tempElement.Resize(_factor);
+                    }                    
+                }
+            }
         }
     }
 }

@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
+
 using SWP2.Prototypes;
 using SWP2.Command;
 using SWP2.Composite;
@@ -22,15 +15,34 @@ namespace SWP2
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {
-        ModelShape.type? type = ModelShape.type.Square;
-        Composite.Composite root = new Composite.Composite();
-        ModelShape rectShape = new ModelShape();        
+    {             
+        GraphicsEditor ge = GraphicsEditor.GetInstance;
+
+        Group group;
+        Add add;
+
+        bool dragging = false;
+        Path tempElement;
+        ModelShape.type tempType;
+        Composite.Composite tempComp;
+
+        double posX;
+        double posY;
 
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = this;
+
+            group = new Group();
+
+            ge.Scene = Scene;
+            
+            Path myPath = new System.Windows.Shapes.Path
+            {
+                Fill = Brushes.Red,
+                Stroke = Brushes.Black,
+            };
+            ge.Root = new Composite.Composite();
         }
 
         private void Quit_Click(object sender, RoutedEventArgs e)
@@ -40,81 +52,187 @@ namespace SWP2
 
         private void Rectangle_Click(object sender, RoutedEventArgs e)
         {
-            type = ModelShape.type.Rectangle;
+            ge.Mode = null;
+            ge.Type = ModelShape.type.Rectangle;
         }
 
         private void Square_Click(object sender, RoutedEventArgs e)
         {
-            type = ModelShape.type.Square;
+            ge.Mode = null;
+            ge.Type = ModelShape.type.Square;
         }
 
         private void Ellipse_Click(object sender, RoutedEventArgs e)
         {
-            type = ModelShape.type.Ellipse;
+            ge.Mode = null;
+            ge.Type = ModelShape.type.Ellipse;
         }
 
         private void Circle_Click(object sender, RoutedEventArgs e)
         {
-            type = ModelShape.type.Circle;
+            ge.Mode = null;
+            ge.Type = ModelShape.type.Circle;
         }
 
         private void Triangle_Click(object sender, RoutedEventArgs e)
         {
-            type = ModelShape.type.Triangle;
+            ge.Mode = null;
+            ge.Type = ModelShape.type.Triangle;
         }
 
-        private void Scene_MouseDown(object sender, MouseButtonEventArgs e)
-        {  
-            double posX = e.GetPosition(Scene).X;
-            double PosY = e.GetPosition(Scene).Y;
-            double h = slider_h.Value;
-            double w = slider_w.Value;
+        private void Select_Click(object sender, RoutedEventArgs e)
+        {
+            ge.Type = null;
+            ge.Mode = GraphicsEditor.mode.Select;
+        }
 
-            switch (type)
-            {
-                case ModelShape.type.Rectangle:
-                    AddRectangle addRect = new AddRectangle(posX, PosY, w, h, Scene, root);
-                    addRect.Execute(rectShape);
-                    break;
-                case ModelShape.type.Square:
-                    AddSquare addSquare = new AddSquare(posX, PosY, w, Scene, root);
-                    addSquare.Execute(rectShape);
-                    break;
-                case ModelShape.type.Ellipse:
-                    AddEllipse addEllipse = new AddEllipse(posX, PosY, w, h, Scene, root);
-                    addEllipse.Execute(rectShape);
-                    break;
-                case ModelShape.type.Circle:
-                    AddCircle addCircle = new AddCircle(posX, PosY, w, Scene, root);
-                    addCircle.Execute(rectShape);
-                    break;
-                case ModelShape.type.Triangle:
-                    AddTriangle addTriangle = new AddTriangle(posX, PosY, w, Scene, root);
-                    addTriangle.Execute(rectShape);
-                    break;
-            }            
+        private void Deselect_Click(object sender, RoutedEventArgs e)
+        {
+            ge.Type = null;
+            ge.Mode = GraphicsEditor.mode.Deselect;
         }
 
         private void Move_Click(object sender, RoutedEventArgs e)
         {
-            type = null;
+            ge.Type = null;
+            ge.Mode = GraphicsEditor.mode.Move;
         }
 
-        private void Resize_Click(object sender, RoutedEventArgs e)
+        private void ResizeSmaller_Click(object sender, RoutedEventArgs e)
         {
-            Resize resize = new Resize(root);
-            resize.Execute(rectShape);
+            Resize resize = new Resize(0.8);
+            resize.Execute(null);
         }
 
-        /*public bool HasHeight
+        private void Group_Click(object sender, RoutedEventArgs e)
         {
-            get
+            group.Execute(null);
+        }
+
+        private void Typ1_Click(object sender, RoutedEventArgs e)
+        {
+            ge.Pen = GraphicsEditor.pen.Typ1;
+        }
+
+        private void Typ2_Click(object sender, RoutedEventArgs e)
+        {
+            ge.Pen = GraphicsEditor.pen.Typ2;
+        }
+
+        private void ResizeBigger_Click(object sender, RoutedEventArgs e)
+        {
+            Resize resize = new Resize(1.2);
+            resize.Execute(null);
+        }
+
+        #region Mouse Events
+
+        private void Scene_MouseDown(object sender, MouseButtonEventArgs e)
+        {  
+            posX = e.GetPosition(Scene).X;
+            posY = e.GetPosition(Scene).Y;
+            double h = slider_h.Value;
+            double w = slider_w.Value;
+
+            
+            Path myPath = new System.Windows.Shapes.Path
             {
-                if (type == ModelShape.type.Ellipse || type == ModelShape.type.Rectangle || type == ModelShape.type.Triangle)
-                    return true;
-                else
-                    return false;
+                Fill = Brushes.Red,
+                Stroke = Brushes.Black,
+            };
+            ModelShape rectShape = new ModelShape();
+
+            if (ge.Type != null)
+            {
+                add = new Add(posX, posY, h, w);
+                add.Execute(rectShape);
             }
-        }*/
+            else if (ge.Mode == GraphicsEditor.mode.Select)
+            {
+                Select select = new Select(posX, posY);
+                select.Execute(null);
+            }
+            else if (ge.Mode == GraphicsEditor.mode.Deselect)
+            {
+                Deselect deselect = new Deselect(posX, posY);
+                deselect.Execute(null);
+            }
+            else if (ge.Mode == GraphicsEditor.mode.Move)
+            {                
+                foreach (var element in ge.Root.childs)
+                {                    
+                    if (element.GetType().FullName == "SWP2.Composite.Composite")
+                    {
+                        tempElement = ((Composite.Composite)element).MyPath;
+                        tempComp = (Composite.Composite)element;
+                    }
+                    else
+                    {
+                        tempElement = ((ModelShape)element).MyPath;
+                        tempType = ((ModelShape)element).Typ;
+                        tempComp = null;
+                    }
+
+                    if (posX > tempElement.Data.Bounds.TopLeft.X && posY > tempElement.Data.Bounds.TopLeft.Y &&
+                    posX < tempElement.Data.Bounds.BottomRight.X && posY < tempElement.Data.Bounds.BottomRight.Y)
+                    {
+                        dragging = true;
+                        tempElement.CaptureMouse();
+                    }
+                }
+            }
+        }
+
+        private void Scene_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (dragging)
+            {
+                // Calculate the current position of the object.
+                double deltaV = e.GetPosition(Scene).Y - posY;
+                double deltaH = e.GetPosition(Scene).X - posX;
+                double newTop = deltaV + posY;
+                double newLeft = deltaH + posX;
+
+                // Set new position of object.
+                tempElement.Data = new RectangleGeometry(new Rect(newLeft, newTop, tempElement.Data.Bounds.Width, tempElement.Data.Bounds.Height));
+
+                if (tempType == ModelShape.type.Circle || tempType == ModelShape.type.Ellipse)
+                    tempElement.Data = new EllipseGeometry(new Rect(newLeft, newTop, tempElement.Data.Bounds.Width, tempElement.Data.Bounds.Height));
+                if (tempType == ModelShape.type.Rectangle || tempType == ModelShape.type.Square)
+                    tempElement.Data = new RectangleGeometry(new Rect(newLeft, newTop, tempElement.Data.Bounds.Width, tempElement.Data.Bounds.Height));
+
+                if (tempComp != null)
+                {
+                    foreach (ModelShape shape in tempComp.childs)
+                    {
+                        if (shape.Typ == ModelShape.type.Circle || shape.Typ == ModelShape.type.Ellipse)
+                            shape.MyPath.Data = new EllipseGeometry(new Rect(shape.MyPath.Data.Bounds.Top + deltaH, shape.MyPath.Data.Bounds.Left + deltaV, shape.MyPath.Data.Bounds.Width, shape.MyPath.Data.Bounds.Height));
+                        if (shape.Typ == ModelShape.type.Rectangle || shape.Typ == ModelShape.type.Square)
+                            shape.MyPath.Data = new RectangleGeometry(new Rect(shape.MyPath.Data.Bounds.Top + deltaH, shape.MyPath.Data.Bounds.Left + deltaV, shape.MyPath.Data.Bounds.Width, shape.MyPath.Data.Bounds.Height));
+                    }
+                }
+
+                // Update position global variables.
+                posX = e.GetPosition(Scene).X;
+                posY = e.GetPosition(Scene).Y;
+
+                posX = newTop;
+                posY = newLeft;
+            }
+        }
+
+        private void Scene_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (ge.Mode == GraphicsEditor.mode.Move)
+            {                
+                tempElement.ReleaseMouseCapture();
+                posX = -1;
+                posY = -1;
+            }
+
+            dragging = false;
+        }
+
+        #endregion   
     }
 }

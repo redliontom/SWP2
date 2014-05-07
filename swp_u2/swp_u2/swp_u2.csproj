@@ -53,16 +53,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Command\AddCircle.cs" />
-    <Compile Include="Command\AddEllipse.cs" />
-    <Compile Include="Command\AddRectangle.cs" />
-    <Compile Include="Command\AddSquare.cs" />
-    <Compile Include="Command\AddTriangle.cs" />
+    <Compile Include="Command\Add.cs" />
+    <Compile Include="Command\Group.cs" />
     <Compile Include="Command\ICommand.cs" />
     <Compile Include="Command\Resize.cs" />
-    <Compile Include="Composite\IComposite.cs" />
+    <Compile Include="Command\Deselect.cs" />
+    <Compile Include="Command\Select.cs" />
+    <Compile Include="GraphicsEditor.cs" />
+    <Compile Include="Prototypes\AbstractShape.cs" />
     <Compile Include="Prototypes\ModelShape.cs" />
-    <Compile Include="Prototypes\RectangleShape.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
